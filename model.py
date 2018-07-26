@@ -76,8 +76,17 @@ def sort_id2():
                 else:
                     main_words[word] = 1
 
-    print(main_words)
+    x = 1
+    choice = ""
+    for word in main_words:
+        if main_words[word] > x:
+            choice = word
+            x = main_words[word]
+
+    print(sorted(main_words))
     print(len(main_words))
+    print(choice)
+    print(x)
 
 def connect_to_db(app):
     """Connect to database."""

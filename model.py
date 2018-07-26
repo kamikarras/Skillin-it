@@ -58,7 +58,7 @@ def load_jobs():
 def sort_id2():
     """sort through the words of posting_id 2"""
 
-    posting_2 = Posting.query.filter_by(posting_id<5).all()
+    posting_2 = Posting.query.filter(Posting.title == "Software Engineer").all()
     all_words = []
 
     for posting in posting_2:
@@ -69,7 +69,7 @@ def sort_id2():
     with open('quiz_answers.txt') as filler:
         del_words = filler.read()
         for word in all_words:
-            word = word.strip("-/\,.:;")
+            word = word.strip("-()/\,.:;*")
             if word not in del_words:
                 if word in main_words:
                     main_words[word] += 1
@@ -77,6 +77,7 @@ def sort_id2():
                     main_words[word] = 1
 
     print(main_words)
+    print(len(main_words))
 
 def connect_to_db(app):
     """Connect to database."""

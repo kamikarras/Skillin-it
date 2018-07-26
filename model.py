@@ -83,7 +83,7 @@ def sort_id2():
             choice = word
             x = main_words[word]
 
-    print(sorted(main_words))
+    print(main_words)
     print(len(main_words))
     print(choice)
     print(x)

@@ -1,6 +1,5 @@
 """Utility file to seed postings database from posting csv file"""
 
-from sqlalchemy import func
 from model import Posting
 from model import connect_to_db, db
 from model import app
@@ -13,10 +12,11 @@ def load_postings():
     with open('data job posts.csv') as csvfile:
         reader = csv.reader(csvfile, delimiter=",")
         for row in reader:
-            title = row[2]
+            title, company = row[2:4]
             description, requirements, qualifications = row[11:14]
 
             posting = Posting(title=title,
+                              company=company,
                               description=description,
                               requirements=requirements,
                               qualifications=qualifications)
@@ -25,6 +25,8 @@ def load_postings():
 
 
     db.session.commit()
+
+
 
 connect_to_db(app)
 load_postings()

@@ -55,47 +55,6 @@ def load_jobs():
         db.session.commit()
 
 
-def sort_id2():
-    """sort through the words of posting_id 2"""
-
-    posting_2 = Posting.query.filter(Posting.title == "Copywriter").all()
-    all_words = []
-
-    for posting in posting_2:
-        words = posting.qualifications.lower().split()
-        all_words.extend(words)
-
-    main_words ={}
-    with open('filler.txt') as filler:
-        del_words = filler.read()
-        for word in all_words:
-            word = word.strip("-()/\,.:;*")
-            if word not in del_words:
-                if word in main_words:
-                    main_words[word] += 1
-                else:
-                    main_words[word] = 1
-
-
-    
-
-
-    skills = []
-    for count in range(len(main_words)):
-        skill_count = 0
-        for word in main_words:
-            if main_words[word] > skill_count:
-                skill_count = main_words[word]
-                skill = word
-        skills.append(skill)
-        del main_words[skill]
-
-
-
-
-    print(main_words)
-    print(skills)
-
 
 def connect_to_db(app):
     """Connect to database."""

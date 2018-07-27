@@ -1,30 +1,65 @@
-from flask import Flask
+from flask import (Flask, render_template, redirect, request, flash, session)
 from flask_sqlalchemy import SQLAlchemy
-from model import Job
-from model import Posting
-from model import load_jobs
-from model import app
+from model import Job, app, Posting, load_jobs, connect_to_db
+from jinja2 import StrictUndefined
+
 
 
 db = SQLAlchemy()
 
-def connect_to_db(app):
-    """Connect to database."""
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///postings'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = app
-    db.init_app(app)
 
 
-def sort_id2():
-    """sort through the words of posting_id 2"""
+app = Flask(__name__)
 
-    posting_2 = Posting.query.filter_by(posting_id=2).one()
+app.secret_key = "ABC"
+
+
+@app.route('/job_skills')
+def show_skills():
+    """get skills and show them"""
+
+    postings = Posting.query.filter(Posting.title == "Software Engineer").all()
+    all_words = []
+
+    for posting in postings:
+        words = posting.qualifications.lower().split()
+        all_words.extend(words)
+
+    word_counts = {}
+    with open('filler.txt') as filler:
+        del_words = filler.read()
+        for word in all_words:
+            word = word.strip("-()/\,.:;*")
+            if word not in del_words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+
+    skills = []
+
+    for count in range(len(word_counts)):
+        skill_count = 0
+        for word in word_counts:
+            if word_counts[word] > skill_count:
+                skill_count = word_counts[word]
+                skill = word
+        skills.append(skill)
+        del word_counts[skill]
+
+    return render_template("job_skills.html", skills=skills)
 
 
 
 
 if __name__ == "__main__":
+    # We have to set debug=True here, since it has to be True at the
+    # point that we invoke the DebugToolbarExtension
+    app.debug = True
+    # make sure templates, etc. are not cached in debug mode
+    app.jinja_env.auto_reload = app.debug
+
     connect_to_db(app)
-    sort_id2()
+
+
+    app.run(port=5000, host='0.0.0.0')

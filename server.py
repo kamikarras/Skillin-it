@@ -13,12 +13,21 @@ app = Flask(__name__)
 
 app.secret_key = "ABC"
 
+@app.route('/job_skills', methods=["GET"])
+def get_title():
+    """displays skills form"""
 
-@app.route('/job_skills')
+
+    return render_template("job_skills.html")
+
+
+@app.route('/job_skills', methods=["POST"])
 def show_skills():
     """get skills and show them"""
 
-    postings = Posting.query.filter(Posting.title == "Software Engineer").all()
+    job_title = request.form.get('title')
+
+    postings = Posting.query.filter(Posting.title == job_title).all()
     all_words = []
 
     for posting in postings:
@@ -29,7 +38,7 @@ def show_skills():
     with open('filler.txt') as filler:
         del_words = filler.read()
         for word in all_words:
-            word = word.strip("-()/\,.:;*")
+            word = word.strip("-()/\,.:;* 1234567890")
             if word not in del_words:
                 if word in word_counts:
                     word_counts[word] += 1
@@ -47,7 +56,9 @@ def show_skills():
         skills.append(skill)
         del word_counts[skill]
 
-    return render_template("job_skills.html", skills=skills)
+    return render_template("job_skills.html", 
+                            skills=skills,
+                            job_title=job_title)
 
 
 

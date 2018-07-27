@@ -66,7 +66,7 @@ def sort_id2():
         all_words.extend(words)
 
     main_words ={}
-    with open('quiz_answers.txt') as filler:
+    with open('filler.txt') as filler:
         del_words = filler.read()
         for word in all_words:
             word = word.strip("-()/\,.:;*")

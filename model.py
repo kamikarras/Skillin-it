@@ -58,7 +58,7 @@ def load_jobs():
 def sort_id2():
     """sort through the words of posting_id 2"""
 
-    posting_2 = Posting.query.filter(Posting.title == "Software Engineer").all()
+    posting_2 = Posting.query.filter(Posting.title == "Copywriter").all()
     all_words = []
 
     for posting in posting_2:
@@ -76,17 +76,26 @@ def sort_id2():
                 else:
                     main_words[word] = 1
 
-    x = 1
-    choice = ""
-    for word in main_words:
-        if main_words[word] > x:
-            choice = word
-            x = main_words[word]
+
+    
+
+
+    skills = []
+    for count in range(len(main_words)):
+        skill_count = 0
+        for word in main_words:
+            if main_words[word] > skill_count:
+                skill_count = main_words[word]
+                skill = word
+        skills.append(skill)
+        del main_words[skill]
+
+
+
 
     print(main_words)
-    print(len(main_words))
-    print(choice)
-    print(x)
+    print(skills)
+
 
 def connect_to_db(app):
     """Connect to database."""

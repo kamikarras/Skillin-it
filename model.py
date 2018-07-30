@@ -98,6 +98,16 @@ def load_skills():
                     db.session.commit()
 
 
+class JobSkillCount(db.Model):
+    """Job Skill Count model"""
+
+    __tablename__ = "jobskillcounts"
+
+    skill_count_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('jobs.job_id'), nullable=False)
+    skill_id = db.Column(db.Integer, db.ForeignKey('skills.skill_id'), nullable=False)
+    count = db.Column(db.Integer, nullable=False)
+
 
 def connect_to_db(app):
     """Connect to database."""

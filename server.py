@@ -56,7 +56,7 @@ def show_skills():
         skills.append(skill)
         del word_counts[skill]
 
-    return render_template("job_skills.html", 
+    return render_template("job_skills.html",
                             skills=skills,
                             job_title=job_title)
 

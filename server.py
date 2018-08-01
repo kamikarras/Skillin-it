@@ -57,6 +57,8 @@ def show_skills():
     """get skills and show them"""
 
     job_title = request.form.get('title')
+    length = request.form.get('list_total')
+    length = int(length)
 
     job = Job.query.filter(Job.title == job_title).one()
     skill_ids = job.skills
@@ -66,7 +68,7 @@ def show_skills():
         skill_count = skill_id.count
         skills.append([skill_count, skill_name[0][0]])
 
-    skills = sorted(skills, reverse=True)
+    skills = sorted(skills, reverse=True)[:length]
 
     # all_words = []
 

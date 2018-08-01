@@ -5,9 +5,11 @@
 <form action ="/job_skills" method="POST">
     <label>Enter a job title</label>
     <input type="text" name="title">
+    <label>Enter how many skills you want</label>
+    <input tyle="number" name="list_total">
     <input type="submit">
 </form>
-<h3>Skills for {{ job_title }}</h3>
+<h3>Top {{ list_total }} skills for {{ job_title }}</h3>
 <ul>
 
     {% for skill in skills %}

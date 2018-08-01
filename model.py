@@ -45,15 +45,14 @@ class Job(db.Model):
 
 def load_jobs():
     """load jobs table from data in postings dataset"""
-
+    JobSkillCount.query.delete()
     Job.query.delete()
 
     titles = db.session.query(Posting.title).all()
     titles = set(titles)
-    titles = list(titles)
 
     for title in titles:
-        job = Job(title=title.title)
+        job = Job(title=title[0])
 
         db.session.add(job)
         db.session.commit()
@@ -108,6 +107,50 @@ class JobSkillCount(db.Model):
     skill_id = db.Column(db.Integer, db.ForeignKey('skills.skill_id'), nullable=False)
     count = db.Column(db.Integer, nullable=False)
 
+    job = db.relationship('Job', backref=db.backref('skills', order_by=skill_count_id))
+    skill = db.relationship('Skill', backref=db.backref('jobs', order_by=skill_count_id))
+
+
+def load_job_skill_counts():
+    """load the counts for each skill a job has into a relationship table"""
+
+
+    jobs = Job.query.all()
+    with open('filler.txt') as filler:
+        del_words = filler.read()
+
+    #for loop going through each job title in the jobs table
+    for job in jobs:
+        all_words = []
+        word_counts = {}
+        # all the related postings in the postings table
+        postings = db.session.query(Posting.qualifications).filter(Posting.title == job.title).all()
+        # combine all text for job
+        for posting in postings:
+            words = posting.qualifications.lower().split()
+            all_words.extend(words)
+        #word counts get added to a dictionary
+        for word in all_words:
+            word = word.strip("-()/\,.:;* 1234567890")
+            if word not in del_words:
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+        print("word_counting is done\n\n\n")
+        print(word_counts)
+        for word in word_counts:
+            print(word)
+            skill = db.session.query(Skill.skill_id).filter(Skill.skill == word)
+            job_skill = JobSkillCount(job_id=job.job_id,
+                                      skill_id=skill,
+                                      count=word_counts[word])
+            db.session.add(job_skill)
+            db.session.commit()
+
+        # when done with each title, words counts get added to the table with
+        # the reference id from the skills table.
+
 
 def connect_to_db(app):
     """Connect to database."""
@@ -126,4 +169,5 @@ if __name__ == "__main__":
     connect_to_db(app)
     load_jobs()
     load_skills()
+    load_job_skill_counts()
     db.create_all()

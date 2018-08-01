@@ -4,7 +4,6 @@ from model import Job, app, Posting, load_jobs, connect_to_db
 from jinja2 import StrictUndefined
 
 
-
 db = SQLAlchemy()
 
 
@@ -12,6 +11,37 @@ db = SQLAlchemy()
 app = Flask(__name__)
 
 app.secret_key = "ABC"
+
+@app.route('/')
+def show_home():
+    """shows the hompage"""
+
+    return render_template("homepage.html")
+
+@app.route('/skill_search', methods=["GET"])
+def get_skill():
+    """displays skill seach form"""
+
+    return render_template("skill_search.html")
+
+
+@app.route('/all_jobs')
+def job_list():
+    """displays a list of all jobs"""
+
+    jobs = Job.query.all()
+
+    return render_template("all_jobs.html", jobs=jobs)
+
+
+@app.route('/skill_search', methods=["POST"])
+def show_jobs():
+    """displays skill seach form"""
+
+    skill = request.form.get('skill')
+
+    return render_template("skill_search.html")
+
 
 @app.route('/job_skills', methods=["GET"])
 def get_title():
@@ -36,7 +66,7 @@ def show_skills():
 
     word_counts = {}
     with open('filler.txt') as filler:
-        del_words = filler.read()
+        del_words = set(filler.read())
         for word in all_words:
             word = word.strip("-()/\,.:;* 1234567890")
             if word not in del_words:

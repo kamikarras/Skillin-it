@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ name }}</h1>
+
+<ul>
+    <h3>These are your skills</h3>
+    {% for skill in user_skills %}
+    <li>
+        {{skill}}
+    </li>
+    {% endfor %}
+</ul>
+<ul>
+    <h3>These are the skills you are working on</h3>
+    {% for skill in user_goals %}
+    <li>
+        {{skill}}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

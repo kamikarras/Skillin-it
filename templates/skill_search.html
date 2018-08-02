@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST">
+    <label>Enter a skill to see jobs related to that skill</label><br>
+    <input type="text" name="skill_search"><br>
+    <input type="submit">
+</form>
+{% if jobs %}
+<!-- <form>
+    <label>Add another skill!</label>
+    <input type="text" name="another_skill"><br>
+    <input type="submit">
+</form> -->
+<ul>
+    <h3>Jobs that use {{skill_search}}</h3>
+{% for job in jobs %}
+<li>
+    {{ job }}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

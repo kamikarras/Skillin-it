@@ -19,6 +19,19 @@ def show_home():
     return render_template("homepage.html")
 
 
+@app.route('/register', methods=["GET"])
+def show_registration():
+"""shows the registration form"""
+
+    return render_template("register.html")
+
+
+@app.route('/register', methods=["POST"])
+def register_user:
+    """adds user to database"""
+
+    return render_template("register.html")
+
 @app.route('/all_jobs')
 def job_list():
     """displays a list of all jobs"""
@@ -40,9 +53,13 @@ def show_jobs():
     """displays skill seach form"""
 
     skill_search = request.form.get('skill_search')
-    skill_search2 = request.form.get('another_skill')
+    # skill_search2 = request.form.get('another_skill')
     skill = Skill.query.filter(Skill.skill==skill_search).one()
     job_ids = skill.jobs
+    # if skill_search2:
+    #     skill2 = Skill.query.filter(Skill.skill==skill_search2).one()
+    #     job_ids2 = skill2.jobs
+
     jobs = []
 
     for job_id in job_ids:

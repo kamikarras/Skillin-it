@@ -52,6 +52,7 @@ def load_jobs():
     titles = set(titles)
 
     for title in titles:
+        title = title.lower()
         job = Job(title=title[0])
 
         db.session.add(job)
@@ -151,6 +152,15 @@ def load_job_skill_counts():
         # when done with each title, words counts get added to the table with
         # the reference id from the skills table.
 
+class User(db.Model):
+    """User table"""
+
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    email = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+
 
 def connect_to_db(app):
     """Connect to database."""
@@ -167,7 +177,7 @@ app = Flask(__name__)
 
 if __name__ == "__main__":
     connect_to_db(app)
-    load_jobs()
-    load_skills()
-    load_job_skill_counts()
+    # load_jobs()
+    # load_skills()
+    # load_job_skill_counts()
     db.create_all()

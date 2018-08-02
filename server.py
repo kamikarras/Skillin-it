@@ -21,16 +21,65 @@ def show_home():
 
 @app.route('/register', methods=["GET"])
 def show_registration():
-"""shows the registration form"""
+    """shows the registration form"""
 
     return render_template("register.html")
 
 
 @app.route('/register', methods=["POST"])
-def register_user:
+def register_user():
     """adds user to database"""
 
-    return render_template("register.html")
+    # get email and password for new user from form
+    email = request.form['email']
+    password = request.form['password']
+    new_user = User(email=email, password=password)
+
+    # add the user to the user database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect("/")
+
+
+@app.route('/login', methods=['GET'])
+def login_form():
+    """shows the login form"""
+
+    return render_template('login_form.html')
+
+@app.route('/login', methods=['POST'])
+def login_process():
+
+    # get user details from form
+    email = request.form['email']
+    password = request.form['password']
+
+    # query to get user from database
+    user = User.query.filter(email=email).first()
+
+    # check if this is a user and if the password matchs
+    if not user:
+        flash("no such user")
+        return redirect('/login')
+
+    if user.password != password:
+        flash("Password does not match.")
+        return redirect('/login')
+
+    session["user_id"] = user.user_id
+
+    flash('You are logged in')
+    return redirect('/')
+
+
+@app.route('/logout')
+def logout():
+    """logs the user out"""
+
+    del session[user_id]
+    flash('log out succesful')
+    return redirect('/')
 
 @app.route('/all_jobs')
 def job_list():

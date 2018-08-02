@@ -9,16 +9,16 @@
     <input tyle="number" name="list_total">
     <input type="submit">
 </form>
-<h3>Top {{ list_total }} skills for {{ job_title }}</h3>
-<ul>
+<h3>Top {{ length }} skills for {{ job_title }}</h3>
+<ol>
 
     {% for skill in skills %}
     <li>
-        {{ skill[0] }} {{skill[1]}}
+        {{skill[1]}}
     </li>
     {% endfor %}
 
-</ul>
+</ol>
 
 
 {% endblock %}

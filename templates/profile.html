@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ name }}</h1>
-
+{% if user_skills %}
 <ul>
     <h3>These are your skills</h3>
     {% for skill in user_skills %}
@@ -10,12 +10,21 @@
     </li>
     {% endfor %}
 </ul>
-<ul>
+{% else %}
+<h3>Looks like you don't have any skills!<h3>
+{% endif %}
+<form method="POST">
+    <h4>add a skill</h4>
+    <input type='text' name='skill'>
+    <input type='submit'>
+    </form>
+<!-- <h3> -->
+<!-- <ul>
     <h3>These are the skills you are working on</h3>
     {% for skill in user_goals %}
     <li>
         {{skill}}
     </li>
     {% endfor %}
-</ul>
+</ul> -->
 {% endblock %}

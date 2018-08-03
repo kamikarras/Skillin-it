@@ -1,6 +1,6 @@
 from flask import (Flask, render_template, redirect, request, flash, session)
 from flask_sqlalchemy import SQLAlchemy
-from model import Job, app, Posting, load_jobs, connect_to_db, Skill
+from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill
 from jinja2 import StrictUndefined
 
 
@@ -32,8 +32,9 @@ def register_user():
 
     # get email and password for new user from form
     email = request.form['email']
+    name = request.form['name']
     password = request.form['password']
-    new_user = User(email=email, password=password)
+    new_user = User(name=name, email=email, password=password)
 
     # add the user to the user database
     db.session.add(new_user)
@@ -56,7 +57,7 @@ def login_process():
     password = request.form['password']
 
     # query to get user from database
-    user = User.query.filter(email=email).first()
+    user = User.query.filter_by(email=email).first()
 
     # check if this is a user and if the password matchs
     if not user:
@@ -70,7 +71,7 @@ def login_process():
     session["user_id"] = user.user_id
 
     flash('You are logged in')
-    return redirect('/')
+    return redirect(f"/profile/{user.user_id}")
 
 
 @app.route('/logout')
@@ -87,26 +88,32 @@ def view_profile(user_id):
     """shows the user profile"""
 
     user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+    name = user.name
 
-    return render_template('profile.html')
+    return render_template('profile.html', name=name, user_id=user_id)
 
 @app.route('/profile/<int:user_id>', methods=['POST'])
-def add_skill(skill):
+def add_skill(user_id):
     """Adds a skill for the user"""
+    user = User.query.filter_by(user_id=user_id).first()
+    name = user.name
 
     # get the user's skill from form
-    skill_label = request.form(skill)
+    skill_label = request.form['skill']
     # get the user from the session
-    user_id = db.session[user_id]
+    user_id = session.get("user_id")
     # find the skill in the skill table
-    skill_id = Skill.query(skill_id).filter(skill=skill_label).first()
+    skill = Skill.query.filter_by(skill=skill_label).first()
+    skill_id = skill.skill_id
 
     # add skill to relationship table
     user_skill = UserSkill(user_id=user_id,
                            skill_id=skill_id)
     db.session.add(user_skill)
-    db.sessin.commit()
+    db.session.commit()
 
+    return render_template('profile.html', user_id=user_id)
 
 
 @app.route('/all_jobs')

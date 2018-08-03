@@ -5,8 +5,12 @@
 </head>
 
 <body>
+{% for flash in get_flashed_messages() %}
+{{ flash }}
+{% endfor %}
+<br>
     <a href='/'>home</a>
-    {% if session[user] %}
+    {% if session["user_id"] %}
     <a href='/logout'>logout</a>
     {% else %}
     <a href='/login'>login</a>

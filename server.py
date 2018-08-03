@@ -81,6 +81,15 @@ def logout():
     flash('log out succesful')
     return redirect('/')
 
+
+@app.route('/profile/<int:user_id>', methods=['GET'])
+def view_profile(user_id):
+    """shows the user profile"""
+
+    user_id = session.get("user_id")
+
+    return render_template('profile.html')
+
 @app.route('/all_jobs')
 def job_list():
     """displays a list of all jobs"""

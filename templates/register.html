@@ -1,0 +1,10 @@
+{% extends base.html %}
+{% content block %}
+<form action='/register' method="POST">
+    <label>Create an email</label>
+<input type='text' name='email'><br>
+    <label>Create a password</label>
+<input type='text' name='password'><br>
+<input type='submit'>
+</form>
+{% endblock %}

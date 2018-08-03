@@ -90,19 +90,28 @@ def view_profile(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
+    user_skills = user.user_skills
 
-    return render_template('profile.html', name=name, user_id=user_id)
+    return render_template('profile.html',
+                            user_skills=user_skills,
+                            name=name,
+                            user_id=user_id)
 
 @app.route('/profile/<int:user_id>', methods=['POST'])
 def add_skill(user_id):
     """Adds a skill for the user"""
+    user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
+    user_skills = user.user_skills
+    skill_labels = []
+    for skill in user_skills:
+        skill_label = Skill.query.filter_by(skill_id=skill.skill_id).first()
+        skill_labels.append(skill_label.skill)
 
     # get the user's skill from form
     skill_label = request.form['skill']
     # get the user from the session
-    user_id = session.get("user_id")
     # find the skill in the skill table
     skill = Skill.query.filter_by(skill=skill_label).first()
     skill_id = skill.skill_id
@@ -113,7 +122,10 @@ def add_skill(user_id):
     db.session.add(user_skill)
     db.session.commit()
 
-    return render_template('profile.html', user_id=user_id)
+    return render_template('profile.html',
+                            user_id=user_id,
+                            name=name,
+                            user_skills=skill_labels)
 
 
 @app.route('/all_jobs')

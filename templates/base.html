@@ -6,7 +6,12 @@
 
 <body>
     <a href='/'>home</a>
+    {% if session[user] %}
     <a href='/logout'>logout</a>
+    {% else %}
+    <a href='/login'>login</a>
+    <a href='/register'>register</a>
+    {% endif %}
     {% block content %}
 
     this is where stuff goes

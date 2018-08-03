@@ -90,6 +90,25 @@ def view_profile(user_id):
 
     return render_template('profile.html')
 
+@app.route('/profile/<int:user_id>', methods=['POST'])
+def add_skill(skill):
+    """Adds a skill for the user"""
+
+    # get the user's skill from form
+    skill_label = request.form(skill)
+    # get the user from the session
+    user_id = db.session[user_id]
+    # find the skill in the skill table
+    skill_id = Skill.query(skill_id).filter(skill=skill_label).first()
+
+    # add skill to relationship table
+    user_skill = UserSkill(user_id=user_id,
+                           skill_id=skill_id)
+    db.session.add(user_skill)
+    db.sessin.commit()
+
+
+
 @app.route('/all_jobs')
 def job_list():
     """displays a list of all jobs"""

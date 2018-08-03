@@ -163,6 +163,23 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
 
 
+class UserSkill(db.Model):
+    """user skills table"""
+
+    __tablename__ = "user_skills"
+
+    user_skill_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
+    skill_id = db.Column(db.Integer, db.ForeignKey('skills.skill_id'), index=True)
+
+    # relationship to the user
+    user = db.relationship("User",
+                            backref=db.backref("user_skills", order_by=user_skill_id))
+    # relationship to the skills
+    skill = db.relationship("Skill",
+                             backref=db.backref("skill_user", order_by=user_skill_id))
+
+
 def connect_to_db(app):
     """Connect to database."""
 
@@ -170,7 +187,6 @@ def connect_to_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
-
 
 
 

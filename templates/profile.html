@@ -2,18 +2,18 @@
 {% block content %}
 <h1>{{ name }}</h1>
 {% if user_skills %}
-<ul>
+<ol>
     <h3>These are your skills</h3>
     {% for skill in user_skills %}
     <li>
         {{skill}}
     </li>
     {% endfor %}
-</ul>
+</ol>
 {% else %}
 <h3>Looks like you don't have any skills!<h3>
 {% endif %}
-<form method="POST">
+<form action="/profile/{{ user_id }}" method="POST">
     <h4>add a skill</h4>
     <input type='text' name='skill'>
     <input type='submit'>

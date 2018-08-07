@@ -1,12 +1,11 @@
-from flask import (Flask, render_template, redirect, request, flash, session)
+from flask import Flask, render_template, redirect, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill
 from jinja2 import StrictUndefined
+from sqlalchemy.orm import load_only, relationship
 
 
 db = SQLAlchemy()
-
-
 
 app = Flask(__name__)
 
@@ -91,13 +90,9 @@ def view_profile(user_id):
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
     user_skills = user.user_skills
-    skill_labels = []
-    for skill in user_skills:
-        skill_label = Skill.query.filter_by(skill_id=skill.skill_id).first()
-        skill_labels.append(skill_label.skill)
 
     return render_template('profile.html',
-                            user_skills=skill_labels,
+                            user_skills=user_skills,
                             name=name,
                             user_id=user_id)
 
@@ -107,22 +102,35 @@ def add_skill(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
-    user_skills = user.user_skills
 
     # get the user's skill from form
     skill_label = request.form['skill']
     # get the user from the session
     # find the skill in the skill table
     skill = Skill.query.filter_by(skill=skill_label).first()
-    skill_id = skill.skill_id
+    user_skills = user.user_skills
 
-    # add skill to relationship table
-    user_skill = UserSkill(user_id=user_id,
-                           skill_id=skill_id)
-    db.session.add(user_skill)
+    # add skill to association table
+    new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
+    db.session.add(new_skill)
     db.session.commit()
-
+    flash("skill added")
+    flash(skill.skill)
     return redirect(f"/profile/{user_id}")
+
+@app.route('/profile/<int:user_id>', methods=['POST'])
+def remove_skill(user_id):
+    """removes a skill from the users skill list"""
+    # retrieve user and the associated skill
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+    delete_me = request.form['delete_this']
+    # specify the skill to be removed
+    for skill in user.user_skills:
+        if skill.skill == delete_me:
+            pass
+    # del that skill from the user skills table
+    # redirect back to the profile page
 
 
 @app.route('/all_jobs')
@@ -205,6 +213,5 @@ if __name__ == "__main__":
     app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
-
 
     app.run(port=5000, host='0.0.0.0')

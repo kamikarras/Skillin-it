@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import load_only
+from sqlalchemy.orm import load_only, relationship
 
 db = SQLAlchemy()
 
@@ -152,6 +152,10 @@ def load_job_skill_counts():
         # when done with each title, words counts get added to the table with
         # the reference id from the skills table.
 
+
+
+
+
 class User(db.Model):
     """User table"""
 
@@ -168,18 +172,16 @@ class UserSkill(db.Model):
 
     __tablename__ = "user_skills"
 
-    user_skill_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     skill_id = db.Column(db.Integer, db.ForeignKey('skills.skill_id'), index=True)
+        
+    skill = db.relationship('Skill',
+                            backref=db.backref('user_skills'), order_by=skill_id)
+    user = db.relationship('User',
+                            backref=db.backref('user_skills'), order_by=user_id)
 
-    # relationship to the user
-    user = db.relationship("User",
-                            backref=db.backref("user_skills", order_by=user_skill_id))
-    # relationship to the skills
-    skill = db.relationship("Skill",
-                             backref=db.backref("skill_user", order_by=user_skill_id))
-
-
+    
 def connect_to_db(app):
     """Connect to database."""
 

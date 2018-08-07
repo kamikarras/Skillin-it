@@ -77,7 +77,7 @@ def login_process():
 def logout():
     """logs the user out"""
 
-    del session[user_id]
+    del session["user_id"]
     flash('log out succesful')
     return redirect('/')
 

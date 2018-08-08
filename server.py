@@ -1,11 +1,11 @@
 from flask import Flask, render_template, redirect, request, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill
+from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill, db
 from jinja2 import StrictUndefined
 from sqlalchemy.orm import load_only, relationship
 
 
-db = SQLAlchemy()
+
 
 app = Flask(__name__)
 
@@ -96,12 +96,14 @@ def view_profile(user_id):
                             name=name,
                             user_id=user_id)
 
+
 @app.route('/profile/<int:user_id>', methods=['POST'])
 def add_skill(user_id):
-    """Adds a skill for the user"""
+    """Adds or remove a skill for the user"""
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
+
 
     # get the user's skill from form
     skill_label = request.form['skill']
@@ -116,22 +118,31 @@ def add_skill(user_id):
     db.session.commit()
     flash("skill added")
     flash(skill.skill)
+
     return redirect(f"/profile/{user_id}")
 
-@app.route('/profile/<int:user_id>', methods=['POST'])
+
+@app.route('/profile/<int:user_id>/del', methods=['POST'])
 def remove_skill(user_id):
     """removes a skill from the users skill list"""
     # retrieve user and the associated skill
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
-    delete_me = request.form['delete_this']
-    # specify the skill to be removed
-    for skill in user.user_skills:
-        if skill.skill == delete_me:
-            pass
-    # del that skill from the user skills table
-    # redirect back to the profile page
 
+    delete_skill = request.form['delete_this']
+    # specify the skill to be removed
+    delete_id = Skill.query.filter_by(skill=delete_skill).first()
+    delete = UserSkill.query.filter_by(skill_id=delete_id.skill_id, user_id=user_id).first()
+    # del that skill from the user skills table
+    db.session.delete(delete)
+    db.session.commit()
+    # redirect back to the profile page
+    return redirect(f"/profile/{user.user_id}")
+
+
+@app.route('/delete_skill', methods=['POST'])
+def show_confirm():
+    return render_template("confirm_delete.html")
 
 @app.route('/all_jobs')
 def job_list():

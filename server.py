@@ -140,10 +140,6 @@ def remove_skill(user_id):
     return redirect(f"/profile/{user.user_id}")
 
 
-@app.route('/delete_skill', methods=['POST'])
-def show_confirm():
-    return render_template("confirm_delete.html")
-
 @app.route('/all_jobs')
 def job_list():
     """displays a list of all jobs"""

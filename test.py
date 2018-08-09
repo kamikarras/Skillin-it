@@ -19,6 +19,17 @@ class MyAppIntergrationTestCase(unittest.TestCase):
         result = self.client.get("/")
         self.assertIn(b"a project by Kami Karras", result.data)
 
+    def test_register(self):
+        """can we reach the register form"""
+
+        result = self.client.get("/register")
+        self.assertIn(b"<form action='/register' method='POST'>", result.data)
+    def test_login(self):
+        """can we reach the login form"""
+
+        result = self.client.get("/login")
+        self.assertIn(b"<form action='/login' method='POST'>", result.data)
+
 
 if __name__ == "__main__":
     unittest.main()

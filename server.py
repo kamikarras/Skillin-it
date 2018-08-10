@@ -161,22 +161,24 @@ def show_jobs():
     """displays skill seach form"""
 
     skill_search = request.form.get('skill_search')
-    # skill_search2 = request.form.get('another_skill')
-    skill = Skill.query.filter(Skill.skill==skill_search).one()
-    job_ids = skill.jobs
-    # if skill_search2:
-    #     skill2 = Skill.query.filter(Skill.skill==skill_search2).one()
-    #     job_ids2 = skill2.jobs
+    skill = Skill.query.filter(Skill.skill==skill_search).first()
+    jobs2 = skill.jobs
+    both = {}
+    if request.form.get('another_skill') != None:
+        skill_search2 = request.form.get('another_skill')
+        skill2 = Skill.query.filter(Skill.skill==skill_search2).first()
+        jobs = skill2.jobs
+        setjobs = set(job.job.title for job in jobs)
+        setjobs2 = set(job.job.title for job in jobs2)
+        both = setjobs & setjobs2
 
-    jobs = []
 
-    for job_id in job_ids:
-        job_title = db.session.query(Job.title).filter(Job.job_id == job_id.job_id).one()
-        jobs.append(job_title[0])
+
 
     return render_template("skill_search.html",
                             jobs=jobs,
-                            skill_search=skill_search)
+                            skill_search=skill_search,
+                            both=both)
 
 
 @app.route('/job_skills', methods=["GET"])

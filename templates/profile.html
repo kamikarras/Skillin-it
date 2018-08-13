@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="name" style="background-color: #ffcd05; color: #1c3664; display: inline-block; padding: 10px 30px; border-radius: 50px; margin-bottom: 30px;">
 <h1>{{ name }}</h1>
+</div>
 {% if user_skills %}
 <ol>
     <h3>These are your skills</h3>
@@ -24,6 +26,14 @@
     <input type='text' name='delete_this'>
     <input name= 'del' type='submit'>
 </form>
+{% if all_jobs %}
+<h3>Jobs looking for your skills</h3>
+<ul>
+{% for job in all_jobs %}
+<li>{{job}}</li>
+{% endfor %}
+</ul>
+{% endif %}
 <!-- <h3> -->
 <!-- <ul>
     <h3>These are the skills you are working on</h3>

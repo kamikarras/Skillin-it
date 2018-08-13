@@ -1,25 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if jobs %}
+<br>
+{% endif %}
 <form method="POST">
-    <label>Enter a skill to see jobs related to that skill</label><br>
+    {% if not jobs %}<label>Enter a skill to see jobs related to that skill</label><br>{% endif %}
     <input type="text" name="skill_search"><br>
-    <label>optional second skill</label><br>
-    <input type="text" name="another_skill"><br>
     <input type="submit">
 </form>
-<h3>both: </h3>
-<ul>
-{% for b in both %}
-<li>{{b}}</li>
-{% endfor %}
-</ul>
 {% if jobs %}
+<h3>jobs: </h3>
 <ul>
-    <h3>Jobs that use {{skill_search}}</h3>
-{% for job in jobs %}
-<li>
-    {{ job.job.title}}
-</li>
+{% for b in jobs %}
+<li>{{b.job.title}}</li>
 {% endfor %}
 </ul>
 {% endif %}

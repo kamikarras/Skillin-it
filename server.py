@@ -89,12 +89,31 @@ def view_profile(user_id):
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
-    user_skills = user.user_skills
+    skills = user.user_skills
+    if skills:
+        # create a set to hold all of the jobs
+        all_jobs = {}
+        counter = 0
+        # find the jobs for each skill
+        for skill in skills:
+            skill_label = Skill.query.filter_by(skill_id=skill.skill_id).first()
+            # get the list of jobs through the relationship
+            jobs = skill_label.jobs
+            # use set comprehension to create a set of the job titles
+            titles = set(job.job.title for job in jobs)
+            # add the skills to the main set with set math intersection
+            if counter < 1:
+                all_jobs = titles
+            else:
+                all_jobs = all_jobs & titles
+
+            counter += 1
 
     return render_template('profile.html',
-                            user_skills=user_skills,
+                            user_skills=skills,
                             name=name,
-                            user_id=user_id)
+                            user_id=user_id,
+                            all_jobs=all_jobs)
 
 
 @app.route('/profile/<int:user_id>', methods=['POST'])
@@ -140,6 +159,27 @@ def remove_skill(user_id):
     return redirect(f"/profile/{user.user_id}")
 
 
+# @app.route('/profile/<int:user_id>', methods=['GET'])
+# def show_potential jobs(user_skills):
+#     # get the user 
+#     user_id = session.get("user_id")
+#     user = User.query.filter_by(user_id=user_id).first()
+#     # get this users skills
+#     skills = user.user_skills
+#     # create a set to hold all of the jobs
+#     all_jobs = {}
+#     # find the jobs for each skill
+#     for skill in skills:
+#         # get the list of jobs through the relationship
+#         jobs = skill.jobs
+#         # user set comprehension to create a set of the job titles
+#         titles = set(job.job.title for job in jobs)
+#         # add the skills to the main set with set math intersection
+#         all_jobs = all_jobs & titles
+
+
+
+
 @app.route('/all_jobs')
 def job_list():
     """displays a list of all jobs"""
@@ -159,26 +199,14 @@ def get_skill():
 @app.route('/skill_search', methods=["POST"])
 def show_jobs():
     """displays skill seach form"""
-
     skill_search = request.form.get('skill_search')
     skill = Skill.query.filter(Skill.skill==skill_search).first()
-    jobs2 = skill.jobs
-    both = {}
-    if request.form.get('another_skill') != None:
-        skill_search2 = request.form.get('another_skill')
-        skill2 = Skill.query.filter(Skill.skill==skill_search2).first()
-        jobs = skill2.jobs
-        setjobs = set(job.job.title for job in jobs)
-        setjobs2 = set(job.job.title for job in jobs2)
-        both = setjobs & setjobs2
-
-
+    jobs = skill.jobs
 
 
     return render_template("skill_search.html",
                             jobs=jobs,
-                            skill_search=skill_search,
-                            both=both)
+                            skill_search=skill_search)
 
 
 @app.route('/job_skills', methods=["GET"])

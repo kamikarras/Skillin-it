@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, flash, session
+from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill, db
 from jinja2 import StrictUndefined
@@ -159,25 +159,12 @@ def remove_skill(user_id):
     return redirect(f"/profile/{user.user_id}")
 
 
-# @app.route('/profile/<int:user_id>', methods=['GET'])
-# def show_potential jobs(user_skills):
-#     # get the user 
-#     user_id = session.get("user_id")
-#     user = User.query.filter_by(user_id=user_id).first()
-#     # get this users skills
-#     skills = user.user_skills
-#     # create a set to hold all of the jobs
-#     all_jobs = {}
-#     # find the jobs for each skill
-#     for skill in skills:
-#         # get the list of jobs through the relationship
-#         jobs = skill.jobs
-#         # user set comprehension to create a set of the job titles
-#         titles = set(job.job.title for job in jobs)
-#         # add the skills to the main set with set math intersection
-#         all_jobs = all_jobs & titles
+@app.route('/data.json')
+def get_data():
+    """displays my test page"""
 
-
+    test = {'kami': [10, 29, 16], 'jake': 15}
+    return jsonify(test)
 
 
 @app.route('/all_jobs')

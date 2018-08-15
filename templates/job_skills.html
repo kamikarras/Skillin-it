@@ -2,12 +2,12 @@
 
 {% block content %}
 
-<form method="GET">
+<form id="changeit" method="GET" action="/job_skills.json">
     <label>Enter a job title</label>
-    <input type="text" name="title">
+    <input type="text" id="title" name="title">
     <label>Enter how many skills you want</label>
-    <input tyle="number" name="list_total">
-    <button id="changeit">do it</button>
+    <input type="number" id="list_total" name="list_total">
+    <input type="submit">
 </form>
 <h3>Top {{ length }} skills for {{ job_title }}</h3>
 <ol>

@@ -2,26 +2,29 @@
 "use strict";
 
 function replaceStuff(results) {
-    let status = results;
-    $('#changeme').html(status.counts);
-    console.log(status.counts);
-    console.log("replaced it");
+    let status = result.skills;
+    console.log(status);
 }
 
 function updateStuff(evt) {
     evt.preventDefault();
-    $.get('/data.json', {order: 123}, makeLayout);
+    let formInputs = {
+        "title": $("#title").val(),
+        "list_total": $("#list_total").val(),
+    };
+    $.get('/job_skills.json', formInputs, makeLayout);
     console.log("sent ajax");
 }
-$('#changeit').on('click', updateStuff);
+$('#changeit').on('submit', updateStuff);
 
 
 
 
 
 function makeLayout(data){
+    console.log("make layout")
     let stuff = data;
-    let skills = data.skills;
+    let skills = stuff.skills;
     let counts = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
     // console.log("hit makeLayout");
     console.log(skills)

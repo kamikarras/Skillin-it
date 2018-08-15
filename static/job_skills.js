@@ -1,16 +1,5 @@
-// let dataset = [1, 2, 3, 4, 5];
+
 "use strict";
-
-
-d3.json("/data.json", test);
-
-function test(data) {
-    let counts = d.counts;
-    console.log("hello")
-    return console.log(counts);
-}
-
-
 
 function replaceStuff(results) {
     let status = results;
@@ -19,12 +8,12 @@ function replaceStuff(results) {
     console.log("replaced it");
 }
 
-function updateStuff() {
+function updateStuff(evt) {
+    evt.preventDefault();
     $.get('/data.json', {order: 123}, makeLayout);
     console.log("sent ajax");
 }
 $('#changeit').on('click', updateStuff);
-
 
 
 

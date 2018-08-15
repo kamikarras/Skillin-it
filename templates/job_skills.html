@@ -2,23 +2,24 @@
 
 {% block content %}
 
-<form action ="/job_skills" method="POST">
+<form method="GET">
     <label>Enter a job title</label>
     <input type="text" name="title">
     <label>Enter how many skills you want</label>
     <input tyle="number" name="list_total">
-    <input type="submit">
+    <button id="changeit">do it</button>
 </form>
 <h3>Top {{ length }} skills for {{ job_title }}</h3>
 <ol>
 
     {% for skill in skills %}
     <li>
-        {{skill[1]}}
+        {{skill[1]}} {{skill[0]}}
     </li>
     {% endfor %}
 
 </ol>
-
+<script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="/static/job_skills.js"></script>
 
 {% endblock %}

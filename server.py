@@ -163,6 +163,9 @@ def remove_skill(user_id):
 def get_data():
     """displays my test page"""
 
+    # label = request.args.get("skill")
+    # skill = Skill.query.filter_by("")
+
     test = JobSkillCount.query.filter_by(job_id=155636).all()
     counts = [job.count for job in test]
     skills = [job.skill.skill for job in test]
@@ -216,29 +219,32 @@ def get_title():
     return render_template("job_skills.html")
 
 
-@app.route('/job_skills', methods=["POST"])
-def show_skills():
-    """get skills and show them"""
+# @app.route('/data.json', methods=["GET"])
+# def show_skills():
+#     """get skills and show them"""
 
-    job_title = request.form.get('title')
-    length = request.form.get('list_total')
-    length = int(length)
+#     job_title = request.form.get('title')
+#     length = request.form.get('list_total')
+#     length = int(length)
 
-    job = Job.query.filter(Job.title == job_title).one()
-    skill_ids = job.skills
-    skills = []
-    for skill_id in skill_ids:
-        skill_name = db.session.query(Skill.skill).filter(Skill.skill_id == skill_id.skill_id).all()
-        skill_count = skill_id.count
-        skills.append([skill_count, skill_name[0][0]])
+#     job = Job.query.filter(Job.title == job_title).one()
+#     skillCount_objects = job.skills
+#     skills = [skillcount.skill.skill for skillcount in skillCount_objects]
+#     counts = [skillcount.count for skillcount in skillCount_objects]
 
-    skills = sorted(skills, reverse=True)[:length]
+#     return jsonify({"skills": skills, "counts": counts})
+#     # for skill_id in skill_ids:
+#     #     skill_name = db.session.query(Skill.skill).filter(Skill.skill_id == skill_id.skill_id).all()
+#     #     skill_count = skill_id.count
+#     #     skills.append([skill_count, skill_name[0][0]])
+
+#     # skills = sorted(skills, reverse=True)[:length]
 
 
-    return render_template("job_skills.html",
-                            skills=skills,
-                            job_title=job_title,
-                            length=length)
+#     # return render_template("job_skills.html",
+#     #                         skills=skills,
+#     #                         job_title=job_title,
+#     #                         length=length)
 
 
 if __name__ == "__main__":

@@ -32,7 +32,10 @@ $('#changeit').on('click', updateStuff);
 
 function makeLayout(data){
     let stuff = data;
+    let skills = data.skills;
+    let counts = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
     // console.log("hit makeLayout");
+    console.log(skills)
     
     // console.log("data" + stuff + "\nStatus" + status);
 
@@ -47,9 +50,14 @@ function makeLayout(data){
     .style("position", "absolute")
     .style("right", "0")
     .style("height", "50px")
-    .style("top", function(d) {return d * 60+100 + "px"; })
     .style("width", function(d) {return d * 100 + "px"; })
+    .data(counts)
+    .style("top", function(d) {return d * 60 + "px"; })
+    .data(skills)
+    .text(function(d) {return d; })
+    .data(data.counts)
+    .append("p")
     .text(function(d) {return d; });
-    $('#changeme').html(stuff.counts);
+    $('#changeme').html(skills);
 
 }

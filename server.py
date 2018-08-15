@@ -165,7 +165,8 @@ def get_data():
 
     test = JobSkillCount.query.filter_by(job_id=155636).all()
     counts = [job.count for job in test]
-    return jsonify({'counts' : counts})
+    skills = [job.skill.skill for job in test]
+    return jsonify({'counts' : counts, 'skills': skills})
 
 @app.route('/status')
 def get_order_status():

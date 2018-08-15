@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill, db
+from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill, db, JobSkillCount
 from jinja2 import StrictUndefined
 from sqlalchemy.orm import load_only, relationship
 
@@ -163,8 +163,19 @@ def remove_skill(user_id):
 def get_data():
     """displays my test page"""
 
-    test = {'kami': [10, 29, 16], 'jake': 15}
-    return jsonify(test)
+    test = JobSkillCount.query.filter_by(job_id=155636).all()
+    counts = [job.count for job in test]
+    return jsonify({'counts' : counts})
+
+@app.route('/status')
+def get_order_status():
+
+    order_number = request.args.get("order")
+
+    if order_number == "123":
+        return jsonify({"late": "okay", "less late": "sure"})
+    else:
+        return "not late"
 
 
 @app.route('/all_jobs')

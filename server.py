@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
 from model import Job, app, Posting, load_jobs, connect_to_db, Skill, User, UserSkill, db, JobSkillCount
 from jinja2 import StrictUndefined
-from sqlalchemy.orm import load_only, relationship
+from sqlalchemy.orm import relationship
 
 
 
@@ -215,37 +216,14 @@ def show_skills():
     length = request.args.get('list_total')
     length = int(length)
 
-    job = Job.query.filter(Job.title == job_title).one()
-    skillCount_objects = job.skills[:length]
-    skills = [skillcount.skill.skill for skillcount in skillCount_objects]
-    counts = [skillcount.count for skillcount in skillCount_objects]
+    job = Job.query.filter(Job.title==job_title).first()
+    # skillCount_objects = list(job.skills)
+    jobskills = JobSkillCount.query.filter_by(job_id=job.job_id).order_by(desc(JobSkillCount.count)).limit(length)
+    skills = [skillcount.skill.skill for skillcount in jobskills]
+    counts = [skillcount.count for skillcount in jobskills]
 
     return jsonify({"counts": counts, "skills": skills})
-    # for skill_id in skill_ids:
-    #     skill_name = db.session.query(Skill.skill).filter(Skill.skill_id == skill_id.skill_id).all()
-    #     skill_count = skill_id.count
-    #     skills.append([skill_count, skill_name[0][0]])
 
-#     # skills = sorted(skills, reverse=True)[:length]
-
-
-#     # return render_template("job_skills.html",
-#     #                         skills=skills,
-#     #                         job_title=job_title,
-#     #                         length=length)
-
-
-# @app.route('/data.json')
-# def get_data():
-#     """displays my test page"""
-
-#     # label = request.args.get("skill")
-#     # skill = Skill.query.filter_by("")
-
-#     test = JobSkillCount.query.filter_by(job_id=155636).all()
-#     counts = [job.count for job in test]
-#     skills = [job.skill.skill for job in test]
-#     return jsonify({'counts' : counts, 'skills': skills})
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

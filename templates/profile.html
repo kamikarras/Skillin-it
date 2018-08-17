@@ -38,9 +38,25 @@
     <input name= 'del' type='submit' value='delete'>
 </form>
 {% if all_jobs %}
-<h3>Jobs looking for your skills</h3>
+<h3>Jobs looking for all skills</h3>
 <ul>
 {% for job in all_jobs %}
+<li>{{job}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% if current_skill_jobs %}
+<h3>Jobs looking for your current skills</h3>
+<ul>
+{% for job in current_skill_jobs %}
+<li>{{job}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% if progress_skills_jobs %}
+<h3>Jobs looking for your progress skills</h3>
+<ul>
+{% for job in progress_skills_jobs %}
 <li>{{job}}</li>
 {% endfor %}
 </ul>

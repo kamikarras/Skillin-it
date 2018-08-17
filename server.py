@@ -92,9 +92,13 @@ def view_profile(user_id):
     name = user.name
     skills = user.user_skills
     all_jobs = {}
+    current_skill_jobs = {}
+    progress_skills_jobs = {}
     if skills:
         # create a set to hold all of the jobs
         counter = 0
+        progress_counter = 0
+        current_counter = 0
         # find the jobs for each skill
         for skill in skills:
             skill_label = Skill.query.filter_by(skill_id=skill.skill_id).first()
@@ -103,18 +107,38 @@ def view_profile(user_id):
             # use set comprehension to create a set of the job titles
             titles = set(job.job.title for job in jobs)
             # add the skills to the main set with set math intersection
+            if skill.in_progress:
+                print("sure")
+                if progress_counter < 1:
+                    progress_skills_jobs = titles
+                else:
+                    progress_skills_jobs = progress_skills_jobs & titles
+
+                progress_counter += 1
+            else:
+                if current_counter <1:
+                    current_skill_jobs = titles
+                else:
+                    current_skill_jobs = current_skill_jobs & titles
+
+                current_counter +=1
+
             if counter < 1:
                 all_jobs = titles
             else:
                 all_jobs = all_jobs & titles
 
             counter += 1
+            print(progress_skills_jobs)
+
 
     return render_template('profile.html',
                             user_skills=skills,
                             name=name,
                             user_id=user_id,
-                            all_jobs=all_jobs)
+                            all_jobs=all_jobs,
+                            current_skill_jobs=current_skill_jobs,
+                            progress_skills_jobs=progress_skills_jobs)
 
 
 @app.route('/profile/<int:user_id>', methods=['POST'])

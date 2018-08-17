@@ -7,9 +7,19 @@
 <ol>
     <h3>These are your skills</h3>
     {% for skill in user_skills %}
+    {% if not skill.in_progress %}
     <li>
         {{skill.skill.skill}}
     </li>
+    {% endif %}
+    {% endfor %}
+    <h3>These are in progress skills</h3>
+    {% for skill in user_skills %}
+    {% if skill.in_progress %}
+    <li>
+        {{skill.skill.skill}}
+    </li>
+    {% endif %}
     {% endfor %}
 </ol>
 {% else %}
@@ -17,14 +27,15 @@
 {% endif %}
 <form name="add" action="/profile/{{ user_id }}" method="POST">
     <h4>add a skill</h4>
+    <input type='checkbox' name='in-progress'>this skill is in progress still<br>
     <input type='text' name='skill'>
-    <input name='add' type='submit'>
+    <input name='add' type='submit' value='add'>
     </form>
 
 <form name="del" action="/profile/{{ user_id }}/del" method="POST">
     <h4>delete a skill</h4>
     <input type='text' name='delete_this'>
-    <input name= 'del' type='submit'>
+    <input name= 'del' type='submit' value='delete'>
 </form>
 {% if all_jobs %}
 <h3>Jobs looking for your skills</h3>

@@ -127,13 +127,18 @@ def add_skill(user_id):
 
     # get the user's skill from form
     skill_label = request.form['skill']
+    if request.form.get('in-progress'):
+        progress = request.form.get('in-progress')
     # get the user from the session
     # find the skill in the skill table
     skill = Skill.query.filter_by(skill=skill_label).first()
     user_skills = user.user_skills
 
     # add skill to association table
-    new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
+    if request.form.get('in-progress'):
+        new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id, in_progress=True))
+    else:
+        new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
     db.session.add(new_skill)
     db.session.commit()
     flash("skill added")

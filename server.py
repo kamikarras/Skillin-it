@@ -188,16 +188,15 @@ def remove_skill(user_id):
     # redirect back to the profile page
     return redirect(f"/profile/{user.user_id}")
 
+@app.route('/addskill.json', methods=['GET', 'POST'])
+def add_skill_from_list():
+    """adding a skill from the skill list"""
+    skill = request.args.get("cool")
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+    print(skill)
 
-@app.route('/status')
-def get_order_status():
-
-    order_number = request.args.get("order")
-
-    if order_number == "123":
-        return jsonify({"late": "okay", "less late": "sure"})
-    else:
-        return "not late"
+    return redirect('/skill_search')
 
 
 @app.route('/all_jobs')
@@ -209,7 +208,7 @@ def job_list():
     return render_template("all_jobs.html", jobs=jobs)
 
 
-@app.route('/skill_search', methods=["GET"])
+@app.route('/skill_search', methods=["GET", "POST"])
 def get_skill():
     """displays skill seach form"""
 

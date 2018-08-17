@@ -16,9 +16,16 @@ function updateStuff(evt) {
     console.log("sent ajax");
 }
 $('#changeit').on('submit', updateStuff);
+$('#addit').on('click', test);
 
-
-
+function test(evt){
+    evt.preventDefault();
+    let inputs = {
+        "cool" : $('#test').text()
+    };
+    $.get("/addskill.json", inputs);
+    console.log(inputs);
+}
 
 
 function makeLayout(data){
@@ -36,41 +43,43 @@ function makeLayout(data){
     .data(stuff.counts)
     .enter()
     .append("article")
-    .attr("draggable", "true")
-    .attr("ondragstart", "drag(event)")
     .attr("id", function(d) {return d; })
-    .style("display","inline-block")
-    .style("font-size", function(d) { 
-        if (d > 50) {return "30px";}
-            else { return d -10 + "px";}})
+    .style("font-size", "15px")
     .style("text-align", "center")
-    .style("margin","20px")
     .text("lets try this")
     .style("background-color", "pink")
-    .style("border", "5px solid pink")
-    .style("height", function(d) {return d * 3 + "px"; })
-    .style("border-radius", "50%")
+    .style("margin", "20px")
+    .style("height", "50px" )
+    .style("border-radius", "50px")
     .style("width", function(d) {return d * 3 + "px"; })
     .data(skills)
     .text(function(d) {return d; })
+    .append("div")
+    .style("width", "50px")
+    .style("height", "50px")
+    .style("background-color", "black")
+    .style("display","inline-block")
+    .style("border-radius", "50%")
+    .style("margin-right","-70px")
+    .on('mouseover', function(d, i) {
+    d3.select(this)
+    .style("border","3px solid white")
+    .style("cursor","pointer")
+})
+    .on('mouseout', function(d, i) {
+    d3.select(this)
+    .style("border","0px")
+})
+    .on('click', function(d, i) {
+    d3.select('#test').data(skills).style('background-color', 'pink').text(skills[i]).attr("value", [i]);
+})
     .data(data.counts)
     .append("p")
+    .style("margin-top","10px")
+    .style("display","inline-block")
     .style("color", "white")
-    .style("padding", "30px")
-    .text(function(d) {return d; });
-    $('#changeme').html(skills);
+    .text(function(d) {return d; })
+    .data(skills);
 
-}
-function allowDrop(evt) {
-    evt.preventDefault();
-}
 
-function drop(evt){
-    evt.preventDefault();
-    let data = evt.dataTransfer.getData("text");
-    $("drop-here").setAttribute(data);
-}
-
-function drag(evt){
-    evt.dataTransfer.setData("text", evt.target.getAttribute('id'));
 }

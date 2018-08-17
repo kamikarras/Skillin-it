@@ -191,9 +191,15 @@ def remove_skill(user_id):
 @app.route('/addskill.json', methods=['GET', 'POST'])
 def add_skill_from_list():
     """adding a skill from the skill list"""
-    skill = request.args.get("cool")
+    label = request.args.get("cool")
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
+    skill = Skill.query.filter_by(skill=label).first()
+
+    new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
+    db.session.add(new_skill)
+    db.session.commit()
+    flash("skill added")
     print(skill)
 
     return redirect('/skill_search')

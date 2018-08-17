@@ -31,24 +31,26 @@ function makeLayout(data){
     
     // console.log("data" + stuff + "\nStatus" + status);
 
-    d3.select("body")
+    d3.select(".holder")
     .selectAll("article")
     .data(stuff.counts)
     .enter()
     .append("article")
-    .style("font-size", "40px")
+    .attr("draggable", "true")
+    .attr("ondragstart", "drag(event)")
+    .attr("id", function(d) {return d; })
+    .style("display","inline-block")
+    .style("font-size", function(d) { 
+        if (d > 50) {return "30px";}
+            else { return d -10 + "px";}})
     .style("text-align", "center")
+    .style("margin","20px")
     .text("lets try this")
-    .style("background-color", "rgba(100,255,255,0.4")
+    .style("background-color", "pink")
     .style("border", "5px solid pink")
-    .style("margin", "10px")
-    // .style("position", "absolute")
-    .style("height", function(d) {return d * 5 + "px"; })
+    .style("height", function(d) {return d * 3 + "px"; })
     .style("border-radius", "50%")
-    .style("width", function(d) {return d * 5 + "px"; })
-    .data(counts)
-    // .style("right", function(d) {return Math.floor(d * Math.random()) * 80 + "px";})
-    // .style("top", function(d) {return d * 60 + "px"; })
+    .style("width", function(d) {return d * 3 + "px"; })
     .data(skills)
     .text(function(d) {return d; })
     .data(data.counts)
@@ -58,4 +60,17 @@ function makeLayout(data){
     .text(function(d) {return d; });
     $('#changeme').html(skills);
 
+}
+function allowDrop(evt) {
+    evt.preventDefault();
+}
+
+function drop(evt){
+    evt.preventDefault();
+    let data = evt.dataTransfer.getData("text");
+    $("drop-here").setAttribute(data);
+}
+
+function drag(evt){
+    evt.dataTransfer.setData("text", evt.target.getAttribute('id'));
 }

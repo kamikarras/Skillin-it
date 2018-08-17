@@ -91,9 +91,9 @@ def view_profile(user_id):
     user = User.query.filter_by(user_id=user_id).first()
     name = user.name
     skills = user.user_skills
+    all_jobs = {}
     if skills:
         # create a set to hold all of the jobs
-        all_jobs = {}
         counter = 0
         # find the jobs for each skill
         for skill in skills:

@@ -175,13 +175,14 @@ class UserSkill(db.Model):
     user_skill_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), index=True)
     skill_id = db.Column(db.Integer, db.ForeignKey('skills.skill_id'), index=True)
-        
+    in_progress = db.Column(db.Boolean)
+
     skill = db.relationship('Skill',
                             backref=db.backref('user_skills'), order_by=skill_id)
     user = db.relationship('User',
                             backref=db.backref('user_skills'), order_by=user_id)
 
-    
+
 def connect_to_db(app):
     """Connect to database."""
 

@@ -203,7 +203,13 @@ def add_skill_from_list():
     print(skill)
 
     return redirect('/skill_search')
+@app.route('/skill.json')
+def show_details():
+    """shows details of selected skill"""
+    skill = request.args.get("skill")
+    print(skill)
 
+    return redirect('/skill_search')
 
 @app.route('/all_jobs')
 def job_list():
@@ -214,7 +220,7 @@ def job_list():
     return render_template("all_jobs.html", jobs=jobs)
 
 
-@app.route('/skill_search', methods=["GET", "POST"])
+@app.route('/skill_search', methods=["GET"])
 def get_skill():
     """displays skill seach form"""
 

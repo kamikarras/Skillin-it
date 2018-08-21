@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700');
+body {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #76CEDE;
+  color: #1A4B7F;
+}
+
+.lil-ghost{
+    width: 20px;
+}
+
+/*Landing page styles*/
+
+.title{
+    font-weight: 400;
+    margin: auto;
+    font-size: 5em;
+    display: inline-block;
+}
+
+i {
+    display: inline-block;
+    font-size: 2em;
+    margin: 20px;
+}
+
+.title_card{
+    text-align: center;
+    padding: 150px;
+    width: 60%;
+}
+
+.title_card p {
+    margin-top: 50px;
+}
+
+.ghostin {
+    border: none;
+    width: 400px;
+    position: absolute;
+    right: 200px;
+    top: 150px;
+}
+
+/*Profile page styles*/
+section{
+    margin: 50px auto;
+    text-align: center; 
+}
+
+.name{
+    background-color: #1A4B7F;
+    color: white;
+    display: inline-block;
+    padding: 30px 60px;
+    border-radius: 60px;
+    border: 3px solid white;
+    margin: 30px;
+    vertical-align: top;
+
+}
+
+.skills {
+    display: inline-block;
+    margin: 10px ;
+    width: 40%;
+}
+
+.in-progress {
+    margin-top: 100px;
+}
+
+.skill {
+    background-color: white;
+    padding: 10px;
+    border-radius: 40px;
+    margin: 5px;
+    border: 3px solid #1A4B7F;
+    width: 180px;
+    list-style: none;
+    text-align: center;
+    display: inline-block;
+}
+
+aside {
+    width: 30%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+form {
+    text-align: left;
+    padding: 10px;
+    margin-left: 20px;
+}
+
+input[type=text]{
+    height: 50px;
+    width: 70%;
+    border-radius: 20px;
+    text-align: center;
+}
+
+input[type=submit]{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+    background-color: #1A4B7F;
+    border: 3px solid white;
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+input[type=submit]:hover{
+    background-color: pink;
+    transition: all 0.25s;
+    color: #1A4B7F;
+    cursor: pointer;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+}
+
+.jobs {
+    width: 80%;
+    margin: auto;
+    background-color: white;
+    border-radius: 50px;
+    padding: 100px;
+}
+
+#test {
+        background-color: black;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        right: 100px;
+        top: 100px;
+        color: white;
+        border-radius: 10px;
+        }
+
+
+#header{
+    background-color: white;
+    border-bottom: 3px solid pink;
+}
+
+#link{
+    color: #1A4B7F;
+}
+
+#link:hover{
+    color: pink;
+}
+
+svg {
+    border: 1px solid black;
+}
+

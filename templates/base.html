@@ -2,28 +2,16 @@
 <html>
 <head>
     <title>Skillin it</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-    <style>
-    #test {
-        background-color: black;
-        width: 200px;
-        height: 200px;
-        position: absolute;
-        right: 200px;
-        top: 200px;
-        color: white;
-    }
-    .test:hover {
-        background-color: white;
-    }
 
-    #link {
-        color: white;
-    }
+    <style>
+
     body{
-        background-color: #579fd7;
+        background-color: #00A5FF;
     }
     </style>
+    <link rel="stylesheet" href="/static/css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
@@ -31,8 +19,8 @@
 {% for flash in get_flashed_messages() %}
 {{ flash }}
 {% endfor %}
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #1c3664">
-  <a class="navbar-brand" id="link" href="/">Skillin it</a>
+<nav class="navbar navbar-expand-lg navbar-light" id="header">
+  <a class="nav-link" id="link" href="/"><img class="lil-ghost" src="/static/imgs/ghostin_min_blue.png"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

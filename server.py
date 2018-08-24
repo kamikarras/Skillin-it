@@ -165,8 +165,6 @@ def add_skill(user_id):
         new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
     db.session.add(new_skill)
     db.session.commit()
-    flash("skill added")
-    flash(skill.skill)
 
     return redirect(f"/profile/{user_id}")
 
@@ -199,15 +197,12 @@ def add_skill_from_list():
     new_skill = (UserSkill(user_id=user_id, skill_id=skill.skill_id))
     db.session.add(new_skill)
     db.session.commit()
-    flash("skill added")
-    print(skill)
 
     return redirect('/skill_search')
 @app.route('/skill.json')
 def show_details():
     """shows details of selected skill"""
     skill = request.args.get("skill")
-    print(skill)
 
     return redirect('/skill_search')
 

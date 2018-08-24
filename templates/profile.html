@@ -18,13 +18,14 @@
     <input name= 'del' type='submit' value='-'>
 </form>
 </aside>
-{% if user_skills %}
 <div class="skills">
+{% if user_skills %}
+
 <ul class="current">
     <h3>These are your current skills</h3>
     {% for skill in user_skills %}
     {% if not skill.in_progress %}
-    <li class="skill">
+    <li class="pskill">
         {{skill.skill.skill}}
     </li>
     {% endif %}
@@ -32,16 +33,18 @@
     <h3 class="in-progress">These are your in progress skills</h3>
     {% for skill in user_skills %}
     {% if skill.in_progress %}
-    <li class="skill">
+    <li class="pskill">
         {{skill.skill.skill}}
     </li>
     {% endif %}
     {% endfor %}
 </ul>
-</div>
 {% else %}
-<h3>Looks like you don't have any skills!<h3>
+<h3>Booo you don't have any skills!<h3>
+    <img class="sad_ghost" src="/static/imgs/ghostin_sad.svg"/>
+    <h4 style="margin-top: 100px;">Once you add skills, you can see job titles that ask for those skills</h4>
 {% endif %}
+</div>
 </section>
 {% if all_jobs %}
 <div class="jobs">

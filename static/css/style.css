@@ -70,7 +70,7 @@ section{
     margin-top: 100px;
 }
 
-.skill {
+.pskill {
     background-color: white;
     padding: 10px;
     border-radius: 40px;
@@ -94,11 +94,12 @@ form {
     margin-left: 20px;
 }
 
-input[type=text]{
+input[type=text], [type=password]{
     height: 50px;
     width: 70%;
     border-radius: 20px;
     text-align: center;
+    border: 3px solid #1A4B7F;
 }
 
 input[type=submit]{
@@ -129,15 +130,32 @@ input[type=submit]:hover{
 }
 
 #test {
-        background-color: black;
-        width: 50px;
-        height: 50px;
+        width: 300px;
+        height: 150px;
         position: absolute;
-        right: 100px;
-        top: 100px;
+        right: 40%;
+        top: 200px;
         color: white;
+        border: 3px solid white;
         border-radius: 10px;
+        display: none;
+        text-align: center;
+        padding: 30px;
         }
+
+#addit{
+    position: absolute;
+    right: 40%;
+    top: 280px;
+    display: none;
+    background-color: white;
+    border-radius: 50px;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    color: pink;
+    transform: translateX(-100%);
+}
 
 
 #header{
@@ -153,7 +171,59 @@ input[type=submit]:hover{
     color: pink;
 }
 
-svg {
-    border: 1px solid black;
+.sad_ghost{
+    width: 200px;
 }
 
+/*styles for job search*/
+
+#job_search{
+    width: 70%;
+}
+input[type=number]{
+    border: 3px solid #1A4B7F;
+    width: 50px;
+    border-radius: 15px;
+    height: 40px;
+}
+
+#job_search input[type=submit]{
+    width: 150px;
+    margin-left: 20px;
+}
+#job_search input[type=text]{
+    width: 40%;
+}
+#job_search label{
+    margin-left: 20px;
+}
+
+/*registration styles*/
+
+#register{
+    width: 50%;
+    text-align: right;
+}
+
+#register input[type=submit]{
+    width: 100px;
+}
+
+/*skill search styles*/
+#job-results{
+    background-color: white;
+    padding: 10px;
+    border: 3px solid #1A4B7F;
+    margin:10px 10px 10px 0px;
+    display: inline-block;
+    border-radius: 20px;
+}
+.skill-search input[type=submit]{
+    width: 100px;
+}
+.skill-search input[type=text]{
+    width: 300px;
+}
+.skill-search input{
+    display: inline-block;
+}

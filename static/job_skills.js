@@ -15,7 +15,7 @@ function updateStuff(evt) {
     $.get('/job_skills.json', formInputs, makeLayout);
     console.log("sent ajax");
 }
-$('#changeit').on('submit', updateStuff);
+$('#job_search').on('submit', updateStuff);
 $('#addit').on('click', test);
 
 function test(evt){
@@ -35,25 +35,32 @@ function getSkillDetails(evt) {
 }
 
 function makeLayout(data){
-    let w = 800,
+    let w = 1200,
         h = 500;
     console.log("make layout");
     let stuff = data;
     let skills = stuff.skills;
     let counts = stuff.counts;
     // console.log("hit makeLayout");
-    console.log(skills);
+    
+    let total = skills.length,
+        divide = w / total,
+        multiple = h/ counts[0];
+        
 
     let scaling = d3.scaleLinear()
         .domain([0, 200])
         .range([0,w]);
 
+    let path = d3.area()
+        .x(function(d,i) {return i * 100;})
+        .y(function(d) {return h-(d*2);});
 
     let axis = d3.axisBottom()
         .ticks(5)
         .scale(scaling);
     
-    let transition =d3.transition();
+    let transition=d3.transition();
 
     let canvas = d3.select(".holder")
         .append("svg")
@@ -62,32 +69,62 @@ function makeLayout(data){
 
     let group = canvas.append("g");
 
-    let line_d = [0];
 
-    let line = d3.line()
-        .x(function(d, i) {return i * 200;})
-        .y(function(d, i) {return h - d;})
-        .curve(d3.curveCatmullRom.alpha(0.5));
-
-
-    group.selectAll("path")
-        .data([counts])
+    let bars = group.selectAll("path")
+        .data(counts)
         .enter()
         .append("path")
-        .attr("d", line)
+        .attr("d", function(d, i) { return "M" + (i* divide) + " " + h + ", C" + (i*divide + divide/2) + " " + h + ", " + (i*divide + divide/2) + " " + h + ", " + (i * divide + divide) + " " + h +"Z";})
         .attr("fill", "white")
-        .attr("stroke", "white")
-        .attr("stroke-width", 500)
-        .exit();
+        .attr("stroke", "#1A4B7F")
+        .attr("stroke-width", 4)
+        .transition()
+        .attr("d", function(d, i) { return "M" + (i* divide) + " " + h + ", C" + (i*divide + divide/2) + " " + (h-(d*multiple)) + ", " + (i*divide + divide/2) + " " + (h-(d*multiple)) + ", " + (i * divide + divide) + " " + h +"Z";});
+        
 
-    group.selectAll("path")
-        .append("path")
-        .attr("d", function(){
-            return 'M 0 400 L 480 0 L 740 200 L 480 400';
-        })
-        .attr("fill", "black")
-        .attr("stroke", "white")
-        .attr("stroke-width", 500);
+    group.selectAll("circle")
+        .data(counts)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d,i) { return (i*divide + divide/2);})
+        .attr("cy", 0)
+        .attr("r", 10)
+        .attr("fill", "white")
+        .attr("stroke", "#1A4B7F")
+        .attr("stroke-width", 4)
+        .on('mouseover', function(d, i) {
+        d3.select(this)
+            .attr("stroke","pink")
+            .style("cursor","pointer");
+            d3.selectAll('text')
+            .text(function(d){return d;});
+            })
+        .on('mouseout', function(d, i) {
+        d3.select(this)
+            .attr("stroke","#1A4B7F");
+            d3.selectAll('text')
+            .text(function(d,i){return skills[i];});
+            })
+        .on('click', function(d, i) {
+            d3.select('#test').data(skills).style('background-color', 'pink').style('display','block').text(skills[i]).attr("value", skills[i]);
+             $.get('/skill.json', getSkillDetails);
+            d3.select('#addit').style("display", "block");
+            })
+        .transition()  
+        .attr("cy", function(d) {return h - (d*multiple -20);});
+        
+    group.selectAll("text")
+        .data(counts)
+        .enter()
+        .append("text")
+        .attr("x", function(d, i) { return (i*divide + divide/2);})
+        .attr("y", function(d) {return h - (d*multiple -50);})
+        .text(function(d,i) {return skills[i];})
+        .attr("text-anchor", "middle")
+        .attr("font-size", "20px")
+        .attr("fill", "white");
+
+    
 
     // let bars = canvas.selectAll("rect")
     //     .data(counts)

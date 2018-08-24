@@ -2,29 +2,23 @@
 
 {% block content %}
 
-<form id="changeit" method="GET" action="/job_skills.json">
+<form id="job_search" method="GET" action="/job_skills.json">
     <label>Enter a job title</label>
     <input type="text" id="title" name="title">
-    <label>Enter how many skills you want</label>
+    <label>how many skills?</label>
     <input type="number" id="list_total" name="list_total">
     <input type="submit">
 </form>
-<h3>Top {{ length }} skills for {{ job_title }}</h3>
-<ol>
 
-    {% for skill in skills %}
-    <li>
-        {{skill[1]}} {{skill[0]}}
-    </li>
-    {% endfor %}
 
-</ol>
 <div class="holder">
     </div>
-    <button id="addit">add</button>
+    
     <div id="test" name="test" value="none">
         <h3 class="skill"></h3>
     </div>
+    <button id="addit">add</button>
+    
 <script src="https://d3js.org/d3.v5.min.js"></script>
 
     <script src="/static/job_skills.js"></script>

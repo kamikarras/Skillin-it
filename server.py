@@ -79,8 +79,14 @@ def logout():
     """logs the user out"""
 
     del session["user_id"]
-    flash('log out succesful')
-    return redirect('/')
+    return redirect('/logged_out')
+
+
+@app.route('/logged_out')
+def confirm_logout():
+    """shows logout confirmation"""
+
+    return render_template('logged_out.html')
 
 
 @app.route('/profile/<int:user_id>', methods=['GET'])
@@ -198,7 +204,6 @@ def add_skill_from_list():
     db.session.add(new_skill)
     db.session.commit()
 
-    return redirect('/skill_search')
 @app.route('/skill.json')
 def show_details():
     """shows details of selected skill"""

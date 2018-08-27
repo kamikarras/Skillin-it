@@ -16,9 +16,7 @@
 </head>
 
 <body>
-{% for flash in get_flashed_messages() %}
-{{ flash }}
-{% endfor %}
+
 <nav class="navbar navbar-expand-lg navbar-light" id="header">
   <a class="nav-link" id="link" href="/"><img class="lil-ghost" src="/static/imgs/ghostin_min_blue.png"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +51,9 @@
     </ul>
   </div>
 </nav>
+{% for flash in get_flashed_messages() %}
+{{ flash }}
+{% endfor %}
 <br>
 
 

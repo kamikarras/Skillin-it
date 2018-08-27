@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <form class='skill-search' action="/skill_search" method="POST">
-    <label>Enter a skill to see jobs related to that skill</label><br>
+    <label>Enter a skill</label>
     <input type="text" name="skill_search">
     <input type="submit">
 </form>
@@ -15,5 +15,10 @@
 </li>
 {% endfor %}
 </ul>
+{% else %}
+<div class="job-search-ghost">
+    <p>Here you can enter in a skill to see all jobs that ask for it.</p>
+<img src="/static/imgs/ghostin_happy.svg" style="width: 300px"/>
+</div>
 {% endif %}
 {% endblock %}

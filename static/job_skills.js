@@ -26,6 +26,7 @@ function test(evt){
     $.get("/addskill.json", inputs);
     console.log(inputs);
     $(".skill-added-ghost").addClass("show-ghost");
+    setTimeout(function(){ $(".skill-added-ghost").removeClass("show-ghost"); }, 2000);
 }
 
 function getSkillDetails(evt) {
@@ -35,6 +36,9 @@ function getSkillDetails(evt) {
     };
 }
 
+function resetGhost(evt){
+    $(".skill-added-ghost").removeClass("show-ghost");
+}
 function makeLayout(data){
 
 $(".job-search-ghost").addClass('job-search-hidden');

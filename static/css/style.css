@@ -36,7 +36,7 @@ i {
 
 .ghostin {
     border: none;
-    width: 400px;
+    width: 350px;
     position: absolute;
     right: 200px;
     top: 150px;
@@ -101,6 +101,7 @@ input[type=text], [type=password]{
     text-align: center;
     border: 3px solid #1A4B7F;
 }
+
 
 input[type=submit]{
     height: 50px;
@@ -246,6 +247,7 @@ input[type=number]{
     width: 70%;
     border-radius: 60px;
     margin-top: 20px;
+    border: 5px solid #1A4B7F;
 }
 
 /*skill search styles*/
